@@ -18,10 +18,14 @@ def execute_sql(sql, values=(), commit=False, single=False):
     if commit == True:
         results = connection.commit()
     else:
-        results = cursor.fetchhone() if single else cursor.fetchall()
+        results = cursor.fetchone() if single else cursor.fetchall()
     
     cursor.close()
     return results
+def close_connection(exception):
+    connection = getattr(g, '_connection', None)
+    if connection != None:
+        connection.close()
 
 @app.route("/")
 @app.route("/jobs")
